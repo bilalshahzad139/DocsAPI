@@ -1,0 +1,10 @@
+/SrcCode/packages
+/SrcCode/DocsAPI/bin
+/SrcCode/Tester/DocsAPITestConsumer/bin
+/SrcCode/DataFramework/DocsAPI.Entities/bin
+/SrcCode/DataFramework/DocsAPI.DAL/bin
+/SrcCode/DocsAPI/obj
+/SrcCode/DataFramework/DocsAPI.Entities/obj
+/SrcCode/DataFramework/DocsAPI.DAL/obj
+/SrcCode/Tester/DocsAPITestConsumer/obj
+/SrcCode/.vs

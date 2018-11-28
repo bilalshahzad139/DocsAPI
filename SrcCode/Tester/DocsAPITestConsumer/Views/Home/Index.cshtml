@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<a href="#" id="lnkGET1">Get 1 Request</a> <br />
+<a href="#" id="lnkGET2">Get 2 Request</a> <br />
+<a href="#" id="lnkPost">Post Request</a>
+
+
+@section scripts{
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+
+        var token = '@ViewBag.Token';
+        if (!token) {
+            alert('invalid token');
+            return false;
+        }
+        else {
+            sessionStorage.setItem('accessToken', token);
+        }
+
+        var basePath = 'http://localhost:60239/';
+
+        $("#lnkGET1").click(function () {
+
+            var settings = {
+                type: "GET",
+                dataType: "json",
+                url: basePath + "api/Docs/GetData1",
+                data: {},
+                success: function (result) {
+                    alert(result);
+                }
+            };
+
+            $.ajax(settings);
+
+            return false;
+        });
+
+        $("#lnkGET2").click(function () {
+
+            var settings = {
+                type: "GET",
+                dataType: "json",
+                headers: {
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('accessToken')
+                },
+                url: basePath + "api/Docs/GetData2?a=10&b=20",
+                data: {},
+                success: function (result) {
+                    alert(result);
+                }
+            };
+
+            $.ajax(settings);
+
+            return false;
+        });
+
+        $("#lnkPost").click(function () {
+
+            var dataToSend = { id: 1, name: "abc" };
+
+            var settings = {
+                type: "POST",
+                dataType: "json",
+                headers: {
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('accessToken')
+                },
+                url: basePath + "api/Docs/Save",
+                data: dataToSend,
+                success: function (result) {
+                    alert(result);
+                }
+            };
+
+            $.ajax(settings);
+            return false;
+        });
+    });
+    </script>
+}
