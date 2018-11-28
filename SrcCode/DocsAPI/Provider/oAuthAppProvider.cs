@@ -16,17 +16,14 @@ namespace DocsAPI.Provider
         {
             return Task.Factory.StartNew(() =>
             {
-                var username = context.UserName;
-                var password = context.Password;
+                var clientDto = DocsAPI.Models.DocsBAL.ValidateClient(context.UserName, context.Password);
 
-                // UserDTO user = UserDAL.ValidateUser(username, password);
-                
-                if (true)
+                if (clientDto != null)
                 {
                     var claims = new List<Claim>()
                     {
-                        new Claim(ClaimTypes.Name, username),
-                        new Claim("UserID", "1")
+                        new Claim(ClaimTypes.Name, clientDto.Name),
+                        new Claim("ClientID", clientDto.ID.ToString())
                     };
 
                     ClaimsIdentity oAutIdentity = new ClaimsIdentity(claims, Startup.OAuthOptions.AuthenticationType);

@@ -19,8 +19,8 @@ namespace DocsAPITestConsumer.Models
                     var login = new Dictionary<string, string>
                    {
                        {"grant_type", "password"},
-                       {"username", "admin@yahoo.com"},
-                       {"password",  "admin"},
+                       {"username", "aaa-abbc-eeed-eedede"},
+                       {"password",  "zyzaadfadf-adfadsfasdf"},
                    };
 
                     var resp = client.PostAsync("http://localhost:60239/Token", new FormUrlEncodedContent(login));

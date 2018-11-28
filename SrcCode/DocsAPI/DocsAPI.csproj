@@ -43,6 +43,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
       <Private>True</Private>
@@ -137,11 +149,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DocsBAL.cs" />
+    <Compile Include="Models\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Provider\oAuthAppProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <Content Include="logging.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -151,7 +166,24 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\PUCIT.AIMRL.Common.Logger\PUCIT.AIMRL.Common.Logger.csproj">
+      <Project>{8c5205f7-65ee-43c7-a99a-9d09c70fb080}</Project>
+      <Name>PUCIT.AIMRL.Common.Logger</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\PUCIT.AIMRL.Common\PUCIT.AIMRL.Common.csproj">
+      <Project>{70f7021a-a698-4489-a279-822d0efcbdcb}</Project>
+      <Name>PUCIT.AIMRL.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataFramework\DocsAPI.DAL\DocsAPI.DAL.csproj">
+      <Project>{abee8124-51bd-4ebe-b0c2-c150e88a3b36}</Project>
+      <Name>DocsAPI.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataFramework\DocsAPI.Entities\DocsAPI.Entities.csproj">
+      <Project>{864bb949-633a-4304-82ac-2ae174788951}</Project>
+      <Name>DocsAPI.Entities</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
