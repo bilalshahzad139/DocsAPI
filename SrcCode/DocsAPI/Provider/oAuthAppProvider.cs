@@ -22,8 +22,8 @@ namespace DocsAPI.Provider
                 {
                     var claims = new List<Claim>()
                     {
-                        new Claim(ClaimTypes.Name, clientDto.Name),
-                        new Claim("ClientID", clientDto.ID.ToString())
+                        new Claim(ClaimTypes.Name, clientDto.ClientUniqueKey),
+                        new Claim("ClientName", clientDto.Name)
                     };
 
                     ClaimsIdentity oAutIdentity = new ClaimsIdentity(claims, Startup.OAuthOptions.AuthenticationType);

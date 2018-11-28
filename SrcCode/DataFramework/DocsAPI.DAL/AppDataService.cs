@@ -33,5 +33,40 @@ namespace DocsAPI.DAL
                 return data;
             }
         }
+
+        public static List<FileDTO> SaveFilesData(List<FileDTO> fileList, DateTime pActivityTime, String pClientKey)
+        {
+
+            List<FileDTO> fileListUpdated = new List<FileDTO>();
+            using (var db = new AppDataContext())
+            {
+                foreach (var file in fileList)
+                {
+                    string query = "execute dbo.SaveFileData @UniqueName,@ActualFileName,@ContentType,@ConentLengthInBytes,@Extension,@CreatedOn,@ClientKey";
+
+                    var args = new DbParameter[] {
+                        new SqlParameter { ParameterName = "@UniqueName", Value = file.UniqueName},
+                        new SqlParameter { ParameterName = "@ActualFileName", Value = file.ActualFileName},
+                        new SqlParameter { ParameterName = "@ContentType", Value = file.ContentType},
+                        new SqlParameter { ParameterName = "@ConentLengthInBytes", Value = file.ConentLengthInBytes},
+                        new SqlParameter { ParameterName = "@Extension", Value = file.Extension},
+                        new SqlParameter { ParameterName = "@CreatedOn", Value = pActivityTime},
+                        new SqlParameter { ParameterName = "@ClientKey", Value = pClientKey},
+                    };
+
+                    try
+                    {
+                        db.Database.ExecuteSqlCommand(query, args);
+                        fileListUpdated.Add(file);
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
+            }//end of using
+
+            return fileListUpdated;
+        }
+
     }
 }

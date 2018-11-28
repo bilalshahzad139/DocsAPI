@@ -4,82 +4,154 @@
 
 <a href="#" id="lnkGET1">Get 1 Request</a> <br />
 <a href="#" id="lnkGET2">Get 2 Request</a> <br />
-<a href="#" id="lnkPost">Post Request</a>
+<a href="#" id="lnkPost">Post Request</a> <br/>
 
+<a href="#" id="lnkUploadFiles">Upload Files</a> <br />
+
+<form>
+    <input type="file" id="file-upload" multiple="multiple" name="files" value="" class=" file-upload" style="display:none">
+</form>
 
 @section scripts{
 
     <script type="text/javascript">
-    $(document).ready(function () {
+        var apiBasePath = 'http://localhost:60239/';
 
-        var token = '@ViewBag.Token';
-        if (!token) {
-            alert('invalid token');
-            return false;
-        }
-        else {
-            sessionStorage.setItem('accessToken', token);
-        }
+        $(document).ready(function () {
 
-        var basePath = 'http://localhost:60239/';
+            var token = '@ViewBag.Token';
+            if (!token) {
+                alert('invalid token');
+                return false;
+            }
+            else {
+                sessionStorage.setItem('accessToken', token);
+            }
 
-        $("#lnkGET1").click(function () {
+            $("#lnkGET1").click(function () {
 
-            var settings = {
-                type: "GET",
-                dataType: "json",
-                url: basePath + "api/Docs/GetData1",
-                data: {},
-                success: function (result) {
-                    alert(result);
+                var settings = {
+                    type: "GET",
+                    dataType: "json",
+                    url: apiBasePath + "api/Docs/GetData1",
+                    data: {},
+                    success: function (result) {
+                        alert(result);
+                    }
+                };
+
+                $.ajax(settings);
+
+                return false;
+            });
+
+            $("#lnkGET2").click(function () {
+
+                var settings = {
+                    type: "GET",
+                    dataType: "json",
+                    headers: {
+                        'Authorization': 'Bearer ' + sessionStorage.getItem('accessToken')
+                    },
+                    url: apiBasePath + "api/Docs/GetData2?a=10&b=20",
+                    data: {},
+                    success: function (result) {
+                        alert(result);
+                    }
+                };
+
+                $.ajax(settings);
+
+                return false;
+            });
+
+            $("#lnkPost").click(function () {
+
+                var dataToSend = { id: 1, name: "abc" };
+
+                var settings = {
+                    type: "POST",
+                    dataType: "json",
+                    headers: {
+                        'Authorization': 'Bearer ' + sessionStorage.getItem('accessToken')
+                    },
+                    url: apiBasePath + "api/Docs/Save",
+                    data: dataToSend,
+                    success: function (result) {
+                        alert(result);
+                    }
+                };
+
+                $.ajax(settings);
+                return false;
+            });
+
+            $("#lnkUploadFiles").click(function () {
+                $('#file-upload').trigger('click');
+
+                /*----------Reset file input control by going to the form-----------*/
+                $('#file-upload').closest("form").get(0).reset();
+                return false;
+            });
+
+            $('#file-upload').change(function (e) {
+
+                var files = e.target.files;
+                for (var i = 0; i < files.length; i++) {
+                    var fileName = files[i].name;
+                    //var fileSize = files[i].size;
+
+                    var ext = fileName.split('.').pop().toLowerCase();
+                    //check if extension is from mentioned list
+                    if ($.inArray(ext, ['pdf','jpg']) == -1) {
+                        alert('Invalid extension!')
+                        return false;
+                    }
                 }
-            };
-
-            $.ajax(settings);
-
-            return false;
+                UploadDocuments(files);
+            }); //end of change
         });
 
-        $("#lnkGET2").click(function () {
 
-            var settings = {
-                type: "GET",
-                dataType: "json",
-                headers: {
-                    'Authorization': 'Bearer ' + sessionStorage.getItem('accessToken')
-                },
-                url: basePath + "api/Docs/GetData2?a=10&b=20",
-                data: {},
-                success: function (result) {
-                    alert(result);
-                }
-            };
+        function UploadDocuments(attachments) {
 
-            $.ajax(settings);
+            var data = new FormData();
+            /*
+            You may send multiple files here.
+            Just add your files in following way with unique names
+            For example
+            data.append("file1", attach1);
+            data.append("file2", attach2);
 
-            return false;
-        });
+            */
+            for (var i = 0; i < attachments.length; i++) {
+                data.append("file" + i, attachments[i]);
+            }
+            
+            data.append("anyotherdata", 0);
 
-        $("#lnkPost").click(function () {
+            var urltocall = apiBasePath + "api/Docs/Upload";
 
-            var dataToSend = { id: 1, name: "abc" };
-
-            var settings = {
+            var defObj = $.ajax({
                 type: "POST",
-                dataType: "json",
+                url: urltocall,
                 headers: {
                     'Authorization': 'Bearer ' + sessionStorage.getItem('accessToken')
                 },
-                url: basePath + "api/Docs/Save",
-                data: dataToSend,
-                success: function (result) {
-                    alert(result);
-                }
-            };
+                data: data,
+                contentType: false,
+                processData: false,
+                success: function (resp) {
+                    console.log(resp);
+                },
+                error: function (err, type, httpStatus) {
 
-            $.ajax(settings);
-            return false;
-        });
-    });
+                },
+                complete: function () {
+                    $('#divProgressOverlay').hide();
+                    $('#divProgressStatus').hide();
+                }
+            });
+        }//UploadDocument
     </script>
 }

@@ -20,5 +20,17 @@ namespace DocsAPI.Models
                 return null;
             }
         }
+        public static List<FileDTO> SaveFilesData(List<FileDTO> fileList, String pClientKey)
+        {
+            try
+            {
+                return DocsAPI.DAL.AppDataService.SaveFilesData(fileList, DateTime.UtcNow, pClientKey);
+            }
+            catch (Exception ex)
+            {
+                DocsAPI.Util.Utility.HandleException(ex);
+                return null;
+            }
+        }
     }
 }

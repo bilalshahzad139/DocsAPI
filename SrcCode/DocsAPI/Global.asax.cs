@@ -12,6 +12,21 @@ namespace DocsAPI
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            try
+            {
+                //Create UploadedFiles folder if it doesn't exist
+                var uploadedFilesPath = HttpContext.Current.Server.MapPath("~/UploadedFiles");
+
+                if (!System.IO.Directory.Exists(uploadedFilesPath))
+                {
+                    System.IO.Directory.CreateDirectory(uploadedFilesPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Util.Utility.HandleException(ex);
+            }
         }
     }
 }
