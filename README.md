@@ -21,11 +21,11 @@ How to Start:
 - Check "DocsAPITestConsumer\Views\Home\Index.cshtml"
 
 - Right click on solution file in "Solution Explorer", Go to Properties and then choose "Multiple" and then set "Start" for "DocsAPI" & for "DocsAPITestConsumer"
-
+- Create a new database, execute "DataScripts\DB_script.txt" on your new DB to create required objects. 
 - Open "DocsAPI\web.config" file and update connection string
 
 - Rebuild the solution and run by F5
 
-- You will see different links for your testing on "http://localhost:2833/Home/Index".
+- You will see different links on your page for your testing on "http://localhost:2833/Home/Index".
 
 - Note: In "index.cshtml" page, ID of a file is hardcoded. You may upload few files and then update this ID with newly generated ID (you may get it from DB)
