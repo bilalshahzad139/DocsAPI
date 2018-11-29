@@ -31,11 +31,11 @@ namespace DocsAPI.Util
         }
         public static String GetUserIPAddress()
         {
-            var ipAddress = HttpContext.Current.Request.Headers["X-Forwarded-For"];
-            if (String.IsNullOrEmpty(ipAddress))
-                ipAddress = HttpContext.Current.Request.UserHostAddress.ToString();
+            //var ipAddress = "";//HttpContext.Current.Request.Headers["X-Forwarded-For"];
+            //if (String.IsNullOrEmpty(ipAddress))
+            //var ipAddress = HttpContext.Current.Request.UserHostAddress.ToString();
 
-            return ipAddress;
+            return "";
         }
 
         /// <summary>
@@ -54,15 +54,16 @@ namespace DocsAPI.Util
 
         private static String GetUserNameForLogging()
         {
-            var userName = "";
+            return "";
+            //var userName = "";
 
-            //if (HttpContext.Current.Request.UserHostAddress != null)
-                userName += "-IP:" + Utility.GetUserIPAddress();
+            ////if (HttpContext.Current.Request.UserHostAddress != null)
+            //userName += "-IP:" + Utility.GetUserIPAddress();
 
-            if (HttpContext.Current.Request.Url != null && HttpContext.Current.Request.Url.PathAndQuery != null)
-                userName += "-URL: " + HttpContext.Current.Request.Url.AbsoluteUri;
+            //if (HttpContext.Current.Request.Url != null && HttpContext.Current.Request.Url.PathAndQuery != null)
+            //    userName += "-URL: " + HttpContext.Current.Request.Url.AbsoluteUri;
 
-            return userName;
+            //return userName;
         }
 
 
@@ -74,7 +75,7 @@ namespace DocsAPI.Util
 
             //GlobalDataManager.IsCSEncrypted = flag;
 
-            
+
         }
         public static void LoadGlobalSettings()
         {

@@ -11,7 +11,20 @@ namespace DocsAPI
     {
         protected void Application_Start()
         {
+            PUCIT.AIMRL.Common.Logger.LogHandler.ConfigureLogger(Server.MapPath("~/logging.config"));
+            PUCIT.AIMRL.Common.EncryptDecryptUtility.SetParameters("aBcDeFgHiJKLMnoPQrSTu", "123456787912345891234", "MD5", 50, "1234512345124512", 256);
+
+            Util.Utility.LogData("Testing");
+
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            try
+            {
+                Util.Utility.LoadGlobalSettings();
+            }
+            catch (Exception ex)
+            {
+                //Utility.HandleException(ex);
+            }
 
             try
             {
