@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 
 
@@ -97,7 +98,81 @@ namespace DocsAPI.Controllers
                 return "";
             }
         }
+        
 
+        /* Download a file without considering authorization part */
+        [HttpGet]
+        public HttpResponseMessage Download1(String id)
+        {
+            try
+            {
+                //var clientKey = User.Identity.Name;
+                var file = DocsAPI.Models.DocsBAL.GetFileByID(id, "");
+                return DownloadFile(file);
+            }
+            catch (Exception ex)
+            {
+                Utility.HandleException(ex);
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ResponseResult Download(String id)
+        {
+            try
+            {
+                var clientKey = User.Identity.Name;
+                var file = DocsAPI.Models.DocsBAL.GetFileByID(id, clientKey);
+                if(file != null)
+                {
+                    return ResponseResult.GetSuccessObject(new {
+                        FileActualName = file.ActualFileName,
+                        FileSize = file.ConentLengthInBytes,
+                        FileType = file.ContentType,
+                        Extension = file.Extension,
+                        UniqueID = file.UniqueName
+                    });
+                }
+                else
+                {
+                    return ResponseResult.GetErrorObject("Not Found");
+                }
+            }
+            catch (Exception ex)
+            {
+                Utility.HandleException(ex);
+                return ResponseResult.GetErrorObject("Not Found");
+            }
+        }
+
+        private HttpResponseMessage DownloadFile(FileDTO fileDto)
+        {
+            try
+            {
+                var appPhysicalPath = System.Web.HttpContext.Current.Server.MapPath("~/UploadedFiles");
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+                var fileFullPath = System.IO.Path.Combine(appPhysicalPath, fileDto.UniqueName + fileDto.Extension);
+
+                byte[] file = System.IO.File.ReadAllBytes(fileFullPath);
+                System.IO.MemoryStream ms = new System.IO.MemoryStream(file);
+
+                response.Content = new ByteArrayContent(file);
+                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                //String mimeType = MimeType.GetMimeType(file); //You may do your hard coding here based on file extension
+
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue(fileDto.ContentType);
+                response.Content.Headers.ContentDisposition.FileName = fileDto.ActualFileName;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                Utility.HandleException(ex);
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.NotFound);
+                return response;
+            }
+        }
 
         #region ForTesting 
         [HttpGet]

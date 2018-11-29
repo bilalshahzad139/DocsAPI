@@ -7,9 +7,17 @@
 <a href="#" id="lnkPost">Post Request</a> <br/>
 
 <a href="#" id="lnkUploadFiles">Upload Files</a> <br />
+<a href="#" id="lnkDownload1">Download Test (without authorization)</a> <br />
+
+<a href="#" id="lnkDownload2">Download Test (with authorization)</a> <br />
+
+
+<br />
+Displaying image directly from API
+<img src="http://localhost:60239/Docs/Download1/3b79170c-48b2-4ea5-bcb1-0cef9049e65f" width="300px" height="300px"/>
 
 <form>
-    <input type="file" id="file-upload" multiple="multiple" name="files" value="" class=" file-upload" style="display:none">
+    <input type="file" id="file-upload" multiple="multiple" name="files" value="" class="file-upload" style="display:none">
 </form>
 
 @section scripts{
@@ -33,7 +41,7 @@
                 var settings = {
                     type: "GET",
                     dataType: "json",
-                    url: apiBasePath + "api/Docs/GetData1",
+                    url: apiBasePath + "Docs/GetData1",
                     data: {},
                     success: function (result) {
                         alert(result);
@@ -53,7 +61,7 @@
                     headers: {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('accessToken')
                     },
-                    url: apiBasePath + "api/Docs/GetData2?a=10&b=20",
+                    url: apiBasePath + "Docs/GetData2?a=10&b=20",
                     data: {},
                     success: function (result) {
                         alert(result);
@@ -75,7 +83,7 @@
                     headers: {
                         'Authorization': 'Bearer ' + sessionStorage.getItem('accessToken')
                     },
-                    url: apiBasePath + "api/Docs/Save",
+                    url: apiBasePath + "Docs/Save",
                     data: dataToSend,
                     success: function (result) {
                         alert(result);
@@ -110,6 +118,40 @@
                 }
                 UploadDocuments(files);
             }); //end of change
+
+
+            //We are making GET hit without providing any access token
+            $("#lnkDownload1").click(function () {
+                //Here id of file will come from your DB 
+                var url = apiBasePath + "Docs/Download1/3b79170c-48b2-4ea5-bcb1-0cef9049e65f";
+                window.open(url);
+                return false;
+            });
+
+            //Here we are making POST request with access token. 
+            //We 'should' get a different unique ID (one time primarly) and pass that to un-authorized function to get file
+
+            $("#lnkDownload2").click(function () {
+                var dataToSend = { };
+                var settings = {
+                    type: "POST",
+                    dataType: "json",
+                    headers: {
+                        'Authorization': 'Bearer ' + sessionStorage.getItem('accessToken')
+                    },
+                    url: apiBasePath + "Docs/Download?id=3b79170c-48b2-4ea5-bcb1-0cef9049e65f",
+                    data: dataToSend,
+                    success: function (result) {
+                        console.log(result.data);
+                        var url = apiBasePath + "Docs/Download1/" + result.data.UniqueID;
+                        window.open(url);
+                    }
+                };
+
+                $.ajax(settings);
+                return false;
+                return false;
+            });
         });
 
 
@@ -130,7 +172,7 @@
             
             data.append("anyotherdata", 0);
 
-            var urltocall = apiBasePath + "api/Docs/Upload";
+            var urltocall = apiBasePath + "Docs/Upload";
 
             var defObj = $.ajax({
                 type: "POST",

@@ -68,5 +68,20 @@ namespace DocsAPI.DAL
             return fileListUpdated;
         }
 
+        public static FileDTO GetFileByID(String pUniqueyID, String pClientKey)
+        {
+            using (var ctx = new AppDataContext())
+            {
+                string query = "execute dbo.GetFileDataById @pUniqueyID,@pClientKey";
+                var args = new DbParameter[] {
+                    new SqlParameter { ParameterName = "@pUniqueyID", Value = pUniqueyID},
+                    new SqlParameter { ParameterName = "@pClientKey", Value = pClientKey}
+                };
+
+                var data = ctx.Database.SqlQuery<FileDTO>(query, args).FirstOrDefault();
+                return data;
+            }
+        }
+        
     }
 }

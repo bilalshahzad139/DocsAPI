@@ -32,5 +32,18 @@ namespace DocsAPI.Models
                 return null;
             }
         }
+
+        public static FileDTO GetFileByID(String pUniqueyID, String pClientKey)
+        {
+            try
+            {
+                return DocsAPI.DAL.AppDataService.GetFileByID(pUniqueyID, pClientKey);
+            }
+            catch (Exception ex)
+            {
+                DocsAPI.Util.Utility.HandleException(ex);
+                return null;
+            }
+        }
     }
 }
