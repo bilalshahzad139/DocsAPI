@@ -1,8 +1,16 @@
 # DocsAPI
 RESTfull API to manage file uploading & downloading
 
+Tools & Technology:
+Visual Studio 2015.
+ASP.NET Web API
+.NET Framework 4.5
+
 Purpose:
 We all need document/files uploading in our applications. In this repository, we are creating a standard RESTFull Service (using ASP.NET WEB API) which will allow you to upload your documents and will give you unique IDs. You then can manage those IDs in your own DB. Later you may use those IDs and download the document from API.
+
+
+
 
 Repo contains:
 - DocsAPI project (ASP.NET Web API)
