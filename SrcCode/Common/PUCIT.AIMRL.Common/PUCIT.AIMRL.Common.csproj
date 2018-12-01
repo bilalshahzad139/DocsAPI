@@ -43,9 +43,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OnBarcode.Barcode.BarcodeScanner">
-      <HintPath>..\..\OnBarcode.Barcode.BarcodeScanner.dll</HintPath>
-    </Reference>
     <Reference Include="QRCoder, Version=1.2.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\QRCoder.1.2.9\lib\net40\QRCoder.dll</HintPath>
       <Private>True</Private>

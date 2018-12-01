@@ -1,4 +1,4 @@
-﻿using OnBarcode.Barcode.BarcodeScanner;
+﻿//using OnBarcode.Barcode.BarcodeScanner;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -142,36 +142,36 @@ namespace PUCIT.AIMRL.Common
 
         }
 
-        public static String ReadBarCode(String barCodeUpload)
-        {
-            string strBarCode = string.Empty;
-            if (barCodeUpload != null)
-            {
-                Bitmap bitmap = null;
-                try
-                {
-                    bitmap = new Bitmap(barCodeUpload);
-                }
-                catch (Exception ex)
-                {
-                    ex.ToString();
-                }
-                if (bitmap == null)
-                {
-                    return "Your file is not an image";
-                }
-                else
-                {
-                    String[] barcodes = BarcodeScanner.Scan(barCodeUpload, BarcodeType.Code39);
-                    strBarCode = barcodes[0];
-                }
-            }
-            else
-            {
-                return "Please upload the bar code Image.";
-            }
-            return strBarCode;
-        }
+        //public static String ReadBarCode(String barCodeUpload)
+        //{
+        //    string strBarCode = string.Empty;
+        //    if (barCodeUpload != null)
+        //    {
+        //        Bitmap bitmap = null;
+        //        try
+        //        {
+        //            bitmap = new Bitmap(barCodeUpload);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            ex.ToString();
+        //        }
+        //        if (bitmap == null)
+        //        {
+        //            return "Your file is not an image";
+        //        }
+        //        else
+        //        {
+        //            String[] barcodes = BarcodeScanner.Scan(barCodeUpload, BarcodeType.Code39);
+        //            strBarCode = barcodes[0];
+        //        }
+        //    }
+        //    else
+        //    {
+        //        return "Please upload the bar code Image.";
+        //    }
+        //    return strBarCode;
+        //}
 
     }
 
